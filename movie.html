@@ -4,11 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Movie Time</title>
 </head>
 <body>
-    <h1 class="title"></h1>
-    <img class="poster">
+    <header>
+        <h1>Movie Time</h1>
+    </header>
+
+    <div class="container">
+            <div class="layout">
+                <div class="movie-header">
+                    <a href="index.html">Go Back</a>
+                    <h1 class="title"></h1>
+                    <h4 class="year"></h4>
+                    <h4 class="rating"></h4>
+                </div>
+                <div class="movie-body">
+                    <img class="poster" />
+                    <div style="padding: 20px 30px">
+                        <p class="plot" ></p>
+                        <ul class="genres"></ul>
+                        
+                        <h4>Casts</h4>
+                        <ul class="casts"></ul>
+
+                        <h4>Directors</h4>
+                        <ul class="directors"></ul>
+
+                        <h4>Writers</h4>
+                        <ul class="writers"></ul>
+                    </div>
+                    
+                </div>
+                <div class="movie-footer">
+                    
+                </div>
+            </div>
+    </div>
+    
+        
     
     <script src="./js/lib/jquery.min.js"></script>
     <script>
@@ -19,18 +54,30 @@
             const search_params = new URLSearchParams(query_string); 
             const id = search_params.get('id');
 
+            const renderList = (list) => {
+                let template = '';
+                list.forEach(item => {
+                    template += `<li>${item}</li>`
+                })
+                return template;
+            }
+
             $.ajax({
                 type: 'get',
                 url: 'https://pelec4.herokuapp.com/movies/'+id
             })
             .then(res => {
                 console.log('MOVIE', res);
-                $('.title').text(res.title)
+                $('.title').text(res.title);
+                $('.year').text('Year: ' + res.year);
+                $('.rating').text('Rating: ' + res.imdb.rating);
+                $('.poster').attr('src', res.poster || 'https://via.placeholder.com/300')
+                $('.plot').text(res.fullplot)
+                $('.genres').html(renderList(res.genres))
+                $('.casts').html(renderList(res.cast))
+                $('.directors').html(renderList(res.directors))
+                $('.writers').html(renderList(res.writers))
             })
-            
-            // fetch('https://pelec4.herokuapp.com/movies/'+id)
-            //     .then(res => res.json())
-            //     .then(res => console.log(res));
 
         })
     </script>
