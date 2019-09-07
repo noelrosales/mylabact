@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 class="title"></h1>
+    <img class="poster">
+    
+    <script src="./js/lib/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            const url = new URL(window.location.href);
+    
+            const query_string = url.search;
+            const search_params = new URLSearchParams(query_string); 
+            const id = search_params.get('id');
+
+            $.ajax({
+                type: 'get',
+                url: 'https://pelec4.herokuapp.com/movies/'+id
+            })
+            .then(res => {
+                console.log('MOVIE', res);
+                $('.title').text(res.title)
+            })
+            
+            // fetch('https://pelec4.herokuapp.com/movies/'+id)
+            //     .then(res => res.json())
+            //     .then(res => console.log(res));
+
+        })
+    </script>
+</body>
+</html>
